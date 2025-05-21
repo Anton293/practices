@@ -17,13 +17,13 @@
 <div id="results"></div>
 <script>
     document.querySelector('form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the form from submitting the traditional way
+        event.preventDefault();
         const searchQuery = document.getElementById('search').value;
         fetch(`http://localhost:5000/search?text=${encodeURIComponent(searchQuery)}`)
             .then(response => response.json())
             .then(data => {
                 const resultsDiv = document.getElementById('results');
-                resultsDiv.innerHTML = ''; // Clear previous results
+                resultsDiv.innerHTML = '';
                 data.items.forEach(item => {
                     const resultItem = document.createElement('div');
                     resultItem.innerHTML = `<h3>${item.title}</h3><p>${item.snippet}</p><a href="${item.link}">${item.link}</a>`;
