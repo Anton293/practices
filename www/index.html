@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Browser</title>
+</head>
+<body>
+<h2>My Browser</h2>
+<form method="GET">
+    <label for="search">Search:</label>
+    <input type="text" id="search" name="search" value=""><br><br>
+    <input type="submit" value="Submit">
+</form>
+<div id="results"></div>
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+        const searchQuery = document.getElementById('search').value;
+        fetch(`http://localhost:5000/search?text=${encodeURIComponent(searchQuery)}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = ''; // Clear previous results
+                data.items.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.innerHTML = `<h3>${item.title}</h3><p>${item.snippet}</p><a href="${item.link}">${item.link}</a>`;
+                    resultsDiv.appendChild(resultItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
+</body>
+</html>
